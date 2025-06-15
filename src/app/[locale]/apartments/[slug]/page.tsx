@@ -5,9 +5,7 @@ import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 import ApartmentDetailClientContent from './apartment-detail-client-content';
 import { Meteors } from '@/components/ui/meteors';
-import { locales } from '@/i18n'; // Import locales
-
-// ✅ No need for custom props interface here
+import { locales } from '@/i18n';
 
 export async function generateStaticParams() {
   const params = [];
@@ -19,13 +17,10 @@ export async function generateStaticParams() {
   return params;
 }
 
-// ✅ Accepting `params` directly — no ApartmentDetailPageProps
-export async function generateMetadata({
-  params,
-}: {
-  params: { slug: string; locale: string };
-}): Promise<Metadata> {
+// ✅ Loosen type here
+export async function generateMetadata({ params }: { params: { slug: string; locale: string } }): Promise<Metadata> {
   const { slug, locale } = params;
+
   const apartment = apartments.find((ap) => ap.slug === slug);
 
   if (!apartment) {
@@ -52,13 +47,13 @@ export async function generateMetadata({
   };
 }
 
-// ✅ Accepting `params` and `searchParams` directly
+// ✅ Loosen type here too
 export default async function ApartmentDetailPage({
   params,
   searchParams,
 }: {
   params: { slug: string; locale: string };
-  searchParams?: Record<string, string | string[]>;
+  searchParams?: { [key: string]: string | string[] | undefined };
 }) {
   const apartment = apartments.find((ap) => ap.slug === params.slug);
 
