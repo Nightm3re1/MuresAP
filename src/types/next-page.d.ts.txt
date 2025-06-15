@@ -1,0 +1,4 @@
+// This disables any enforced PageProps constraint coming from custom types
+declare module 'next' {
+  interface PageProps {} // empty on purpose
+}
