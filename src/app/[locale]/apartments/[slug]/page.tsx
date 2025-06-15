@@ -7,13 +7,7 @@ import ApartmentDetailClientContent from './apartment-detail-client-content';
 import { Meteors } from '@/components/ui/meteors';
 import { locales } from '@/i18n'; // Import locales
 
-interface ApartmentDetailPageProps {
-  params: Promise<{
-    slug: string;
-    locale: string;
-  }>;
-  searchParams?: { [key: string]: string | string[] | undefined };
-}
+// ✅ No need for custom props interface here
 
 export async function generateStaticParams() {
   const params = [];
@@ -25,9 +19,13 @@ export async function generateStaticParams() {
   return params;
 }
 
-export async function generateMetadata({ params }: ApartmentDetailPageProps): Promise<Metadata> {
-  const { slug, locale } = await params;
-
+// ✅ Accepting `params` directly — no ApartmentDetailPageProps
+export async function generateMetadata({
+  params,
+}: {
+  params: { slug: string; locale: string };
+}): Promise<Metadata> {
+  const { slug, locale } = params;
   const apartment = apartments.find((ap) => ap.slug === slug);
 
   if (!apartment) {
@@ -54,13 +52,15 @@ export async function generateMetadata({ params }: ApartmentDetailPageProps): Pr
   };
 }
 
+// ✅ Accepting `params` and `searchParams` directly
 export default async function ApartmentDetailPage({
   params,
   searchParams,
-}: ApartmentDetailPageProps) {
-  const { slug } = await params;
-
-  const apartment = apartments.find((ap) => ap.slug === slug);
+}: {
+  params: { slug: string; locale: string };
+  searchParams?: Record<string, string | string[]>;
+}) {
+  const apartment = apartments.find((ap) => ap.slug === params.slug);
 
   if (!apartment) {
     notFound();
@@ -69,7 +69,7 @@ export default async function ApartmentDetailPage({
   return (
     <div className="relative bg-background min-h-screen flex-grow">
       <Meteors number={60} className="opacity-70 -z-10 absolute inset-0" />
-      <ApartmentDetailClientContent apartment={apartment} slug={slug} />
+      <ApartmentDetailClientContent apartment={apartment} slug={params.slug} />
     </div>
   );
 }
