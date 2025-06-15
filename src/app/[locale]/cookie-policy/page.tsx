@@ -1,24 +1,26 @@
 export const dynamic = 'force-dynamic';
 
-// This file is now a Server Component
-
 import { getTranslations } from 'next-intl/server';
 import type { Metadata } from 'next';
-import CookiePolicyClientContent from './cookie-policy-client-content'; // Import the new client component
+import CookiePolicyClientContent from './cookie-policy-client-content';
 
-interface CookiePolicyPageProps {
+export async function generateMetadata({
+  params,
+}: {
   params: { locale: string };
-  searchParams?: { [key: string]: string | string[] | undefined };
-}
-
-export async function generateMetadata({params: {locale}}: CookiePolicyPageProps): Promise<Metadata> {
-  const t = await getTranslations({locale, namespace: 'CookiePolicyPage'});
+}): Promise<Metadata> {
+  const t = await getTranslations({ locale: params.locale, namespace: 'CookiePolicyPage' });
   return {
     title: t('title'),
   };
 }
 
-export default function CookiePolicyPage({ params, searchParams }: CookiePolicyPageProps) {
-  // This server component now simply renders the client component
+export default function CookiePolicyPage({
+  params,
+  searchParams,
+}: {
+  params: { locale: string };
+  searchParams?: Record<string, string | string[]>;
+}) {
   return <CookiePolicyClientContent params={params} searchParams={searchParams} />;
 }

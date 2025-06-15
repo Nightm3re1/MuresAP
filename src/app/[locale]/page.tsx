@@ -1,14 +1,19 @@
+export const dynamic = 'force-dynamic';
 
 import { getTranslations } from 'next-intl/server';
 import type { Metadata } from 'next';
 import HomePageClient from '@/components/ui/home-page-client';
 import { Meteors } from '@/components/ui/meteors';
 
-
-// For server components (like this page) that need translations for metadata:
-export async function generateMetadata({params: {locale}}: {params: {locale: string}}): Promise<Metadata> {
-  const t = await getTranslations({locale, namespace: 'Navbar'}); // Using Navbar for 'home'
-  const brandT = await getTranslations({locale, namespace: 'Brand'});
+//  Metadata generation with correct params typing
+export async function generateMetadata({
+  params,
+}: {
+  params: { locale: string };
+}): Promise<Metadata> {
+  const { locale } = params;
+  const t = await getTranslations({ locale, namespace: 'Navbar' });
+  const brandT = await getTranslations({ locale, namespace: 'Brand' });
 
   return {
     title: t('home'),
@@ -16,13 +21,18 @@ export async function generateMetadata({params: {locale}}: {params: {locale: str
   };
 }
 
-
-export default function HomePage() {
+//  Default export with correct props typing
+export default function HomePage({
+  params,
+  searchParams,
+}: {
+  params: { locale: string };
+  searchParams?: Record<string, string | string[]>;
+}) {
   return (
-    <div className="relative flex-grow"> {/* Added flex-grow to ensure it expands */}
+    <div className="relative flex-grow">
       <Meteors number={60} className="opacity-70 -z-10 absolute inset-0" />
       <HomePageClient />
     </div>
   );
 }
-
