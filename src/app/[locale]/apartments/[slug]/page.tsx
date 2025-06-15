@@ -17,8 +17,12 @@ export async function generateStaticParams() {
   return params;
 }
 
-// ✅ Loosen type here
-export async function generateMetadata({ params }: { params: { slug: string; locale: string } }): Promise<Metadata> {
+// ✅ No interface, just direct inline typing
+export async function generateMetadata({
+  params,
+}: {
+  params: { slug: string; locale: string };
+}): Promise<Metadata> {
   const { slug, locale } = params;
 
   const apartment = apartments.find((ap) => ap.slug === slug);
@@ -47,13 +51,13 @@ export async function generateMetadata({ params }: { params: { slug: string; loc
   };
 }
 
-// ✅ Loosen type here too
+// ✅ No interface, just inline props
 export default async function ApartmentDetailPage({
   params,
   searchParams,
 }: {
   params: { slug: string; locale: string };
-  searchParams?: { [key: string]: string | string[] | undefined };
+  searchParams?: Record<string, string | string[] | undefined>;
 }) {
   const apartment = apartments.find((ap) => ap.slug === params.slug);
 
