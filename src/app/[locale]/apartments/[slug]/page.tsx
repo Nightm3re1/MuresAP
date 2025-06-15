@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 
 import { apartments } from '@/lib/data';
 import { notFound } from 'next/navigation';

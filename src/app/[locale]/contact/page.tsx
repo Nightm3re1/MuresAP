@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 
 // This file is now a Server Component
 
