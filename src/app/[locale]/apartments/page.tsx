@@ -1,7 +1,7 @@
 // src/app/[locale]/apartments/page.tsx
 
 import { apartments } from '@/lib/data';
-import ApartmentListClientContent from './apartment-list-client-content';
+import ApartmentListClientContent from './apartments-client-content';
 import type { Metadata, PageProps } from 'next';
 
 // 1. generateStaticParams stays the same
